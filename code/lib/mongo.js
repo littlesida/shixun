@@ -31,3 +31,11 @@ mongolass.plugin('addCreatedAt', {
     return result;
   }
 });
+
+exports.Post = mongolass.model('Post', {
+  author: { type: Mongolass.Types.ObjectId },
+  title: { type: 'string' },
+  name: { type: 'string' },
+  sit: { type: 'string' }
+});
+exports.Post.index({ author: 1, _id: -1 }).exec();// 按创建时间降序查看用户的签到记录
