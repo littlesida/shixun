@@ -6,13 +6,15 @@
   * signin: POST /signin    提交数据
 3. signout
   * GET /signout  退出
-4. users
-  * user index: GET /users/
-  * 
+4. createCourse
+  * GET /createCourse 创建课程界面
+  * POST /createCourse 提交数据
+5. create
+  * GET /posts/create 签到界面
+  * POST /posts/create 提交数据
 
 
+首先先启动数据库 默认端口为27017
+然后使用supervisor --harmony index启动应用，访问localhost:3000
 
 
-
-middlewares
-  * check.js
