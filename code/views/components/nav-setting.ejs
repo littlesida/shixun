@@ -4,7 +4,7 @@
       <i class="icon bars"></i>
       <div class="menu">
         <% if (user) { %>
-          <a class="item" href="/posts?author=<%= user._id %>">个人主页</a>
+          <a class="item" href="/home?author=<%= user._id %>">个人主页</a>
           <div class="divider"></div>
           <a class="item" href="/posts/create">点击签到</a>
           <a class="item" href="/signout">登出</a>
