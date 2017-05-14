@@ -1,0 +1,55 @@
+<%- include('header') %>
+
+<div class="post-content">
+    <div class="five wide column">
+      <div class = "item grid">
+          <div class = "content">
+            <h3 class = "header">课程名称: <%= course.name %></h3>
+            <div class = "description">管理员: <%= course.manager %></div>
+            <div class = "description"> 课程人数: </div>
+            <div class = "description"> 课程描述: <%= course.bio %></div>
+          </div>
+      </div>
+    </div>
+<h3 class = "header">学生名单:</h3>
+<table class="ui celled table">
+  <thead>
+    <tr>
+    <th>学号</th>
+    <th>姓名</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>14331147</td>
+      <td>梁海兴</td>
+    </tr>
+    <tr>
+      <td>14331386</td>
+      <td>郑斯达</td>
+    </tr>
+    <tr>
+      <td>14331377</td>
+      <td>张昱婷</td>
+    </tr>
+    <tr>
+      <td>14331111</td>
+      <td>姬程</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr><th colspan="3">
+      <div class="ui right floated pagination menu">
+        <a class="icon item">
+          <i class="left chevron icon"></i>
+        </a>
+        <a class="item">1</a>
+        <a class="icon item">
+          <i class="right chevron icon"></i>
+        </a>
+      </div>
+    </th>
+  </tr></tfoot>
+</table>
+</div>
+<%- include('footer') %>
