@@ -3,14 +3,12 @@ var path = require('path');
 var express = require('express');
 var router = express.Router();
 
-var CourseModel = require('../models/users');
+var CourseModel = require('../models/courses');
 var checkLogin = require('../middlewares/check').checkLogin;
 
 // GET /createCourse 创建课程
 router.get('/', checkLogin, function(req, res, next) {
-  res.render('createCourse', {
-    pagetitle: "创建课程"
-  });
+  res.render('createCourse');
 });
 
 
@@ -32,10 +30,8 @@ router.post('/', checkLogin, function(req, res, next) {
       throw new Error('缺少学生名单');
     }
   } catch (e) {
-    // 创建课程失败，异步删除上传的名单
-    fs.unlink(req.files.avatar.path);
     req.flash('error', e.message);
-    return res.redirect('/signup');
+    return res.redirect('back');
   }
 
   // 待写入数据库的课程信息
@@ -55,16 +51,7 @@ router.post('/', checkLogin, function(req, res, next) {
       // 跳转到首页
       res.redirect('/home');
     })
-    .catch(function (e) {
-      // 创建失败，异步删除上传的学生名单
-      fs.unlink(req.files.StuList.path);
-      // 课程名被占用则跳回创建页，而不是错误页
-      if (e.message.match('E11000 duplicate key')) {
-        req.flash('error', '课程名已被占用');
-        return res.redirect('/createCourse');
-      }
-      next(e);
-    });
+    .catch(next);
 });
 
 
