@@ -9,55 +9,27 @@
           <i class = "user icon"></i>
           <div class = "content">新建课程</div>
         </a>
-        <div class = "item">
+        <a class = "item">
           <i class = "user icon"></i>
-          <div class = "content">新建课程</div>
-        </div>
+          <div class = "content">实时评测</div>
+        </a>
 
-        <div class = "item">
+        <a class = "item">
           <i class = "user icon"></i>
-          <div class = "content">新建课程</div>
-        </div>
+          <div class = "content">我的课程</div>
+        </a>
 
       </div>
     </div>  
     <div class = "twelve wide column">
       <div class = "ui list segment">
-        <div class = "item grid">
-          <i class = " github large aligned icon"></i>
-          <div class = "content">
-            <a class = "header">课程名称</a>
-            <div class = "description">管理员: admin</div>
-            <div class = "description"> 课程人数</div>
-            <div class = "description"> 课程描述</div>
-            <div class = "description"> 课程描述</div>
-          </div>
-        </div>
 
-        <div class = "item">
-          <i class = " github large aligned icon"></i>
-          <div class = "content">
-            <a class = "header">课程名称</a>
-            <div class = "description">管理员: admin</div>
-            <div class = "description"> 课程人数</div>
-            <div class = "description"> 课程描述</div>
-            <div class = "description"> 课程描述</div>
-          </div>
-        </div>
-
-        <div class = "item">
-          <i class = " github large aligned icon"></i>
-          <div class = "content">
-            <a class = "header">课程名称</a>
-            <div class = "description">管理员: admin</div>
-            <div class = "description"> 课程人数</div>
-            <div class = "description"> 课程描述</div>
-            <div class = "description"> 课程描述</div>
-          </div>
-        </div>
+        <% courses.forEach(function (course) { %>
+        <%- include('components/courses', { course: course }) %>
+        <% }) %>
 
       </div>
-    </civ>
+    </div>
 
   </div>
 </div>
