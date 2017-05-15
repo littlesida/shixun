@@ -1,0 +1,20 @@
+<div class="post-content">
+  <div class="ui grid">
+    <div class="four wide column">
+      <a class="avatar"
+         href="/posts?author=<%= post.author._id %>"
+         data-title="<%= post.author.name %> | <%= ({m: '男', f: '女', x: '保密'})[post.author.gender] %>"
+         data-content="<%= post.author.bio %>">
+        <img class="avatar" src="/img/<%= post.author.avatar %>">
+      </a>
+    </div>
+    <div class="eight wide column">
+      <div class="ui segment">
+        <h3><a href="/posts/<%= post._id %>">签到时间： <%= post.created_at %></a></h3>
+        <h3>学号：<%= post.title %></h3>
+        <h3>姓名：<%= post.name %></h3>
+        <h3>座位号：<%= post.sit %></h3>
+      </div>
+    </div>
+  </div>
+</div>
