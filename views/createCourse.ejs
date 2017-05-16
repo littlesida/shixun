@@ -1,3 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.js"></script>
+    <link href="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.css" rel="stylesheet">
+    <style media="screen">
+        body {
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="ui inverted menu">
+        <a class="item" href="/home"><i class="home icon"></i>主页</a>
+        <a class="item" href="/home">我的课程</a>
+        <a class="active item" href="/createCourse">创建课程</a>
+        <a class="item">测验</a>
+        <!--
+        <div class="ui dropdown item" tabindex="0">
+            Dropdown<i class="dropdown icon"></i>
+            <div class="menu" tabindex="-1">
+                <div class="item">Action</div>
+                <div class="item">Another Action</div>
+                <div class="item">Something else here</div>
+                <div class="divider"></div>
+                <div class="item">Separated Link</div>
+                <div class="divider"></div>
+                <div class="item">One more separated link</div>
+            </div>
+        </div>
+        -->
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent inverted icon input">
+                    <i class="search icon"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+            </div>
+            <a class="item" href="/signout">退出</a>
+        </div>
+    </div>
+    <%- include('components/notification') %>
+
+<div class="ui grid">
+  <div class="four wide column"></div>
+  <div class="eight wide column">
+    <form class="ui form segment" method="post" enctype="multipart/form-data">
+      <div class="field required">
+        <label>课程名称</label>
+        <input placeholder="课程名称" type="text" name="name">
+      </div>
+      
+      <div class="field required">
+        <label>学生名单</label>
+        <input type="file" name="StuList">
+      </div>
+      <div class="field required">
+        <label>课程介绍/说明</label>
+        <textarea name="bio" rows="5" v-model="course.bio"></textarea>
+      </div>
+      <input type="submit" class="ui primary button" value="创建课程">
+     </form>
+  </div>
+</div>
+
+</body>
+</html>
+
+<!--
 <%- include('header') %>
 
 <div class="ui grid">
@@ -23,3 +96,4 @@
 </div>
 
 <%- include('footer') %>
+-->

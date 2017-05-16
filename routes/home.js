@@ -7,6 +7,30 @@ var CourseModel = require('../models/courses');
 var checkLogin = require('../middlewares/check').checkLogin;
 
 router.get('/', checkLogin, function(req, res, next) {
+  var manager = req.session.user.name;
+
+  Promise.all([
+    UserModel.getUserByName(manager),// 获取签到信息
+  ])
+  .then(function (result) {
+    var author = result[0];
+    if (!author) {
+      throw new Error('用户不存在');
+    }
+    CourseModel.getCourses(manager)
+    .then(function (courses) {
+      res.render('home', {
+        author: author,
+        courses: courses
+      });
+    })
+    
+  })
+  .catch(next);
+});
+
+
+router.get('/myCourse', checkLogin, function(req, res, next) {
   //res.render('home');
 
   var manager = req.session.user.name;
@@ -48,7 +72,7 @@ router.get('/:name', function(req, res, next) {
       datas.push(arr);
     }
 
-    res.render('myCourse', {
+    res.render('myCourseDetail', {
       number: datas.length,
       datas: datas,
       course: course,

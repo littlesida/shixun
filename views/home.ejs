@@ -1,36 +1,99 @@
-<%- include('header') %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.js"></script>
+    <link href="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.css" rel="stylesheet">
+    <style media="screen">
+        body {
+            padding: 15px;
+        }
+    </style>
+    <!--
+    <script>
+        $(document).ready(function() {
+            // 鼠标放到 dropdown 时显示下拉菜单，默认只有点击后才显示
+            $('.dropdown.item').dropdown({
+                on: 'hover'
+            });
+        });
+    </script>
+    -->
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="ui inverted menu">
+        <a class="active item" href="/home"><i class="home icon"></i>主页</a>
+        <a class="item">我的课程</a>
+        <a class="item" href="/createCourse">创建课程</a>
+        <a class="item">测验</a>
+        <!--
+        <div class="ui dropdown item" tabindex="0">
+            Dropdown<i class="dropdown icon"></i>
+            <div class="menu" tabindex="-1">
+                <div class="item">Action</div>
+                <div class="item">Another Action</div>
+                <div class="item">Something else here</div>
+                <div class="divider"></div>
+                <div class="item">Separated Link</div>
+                <div class="divider"></div>
+                <div class="item">One more separated link</div>
+            </div>
+        </div>
+        -->
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent inverted icon input">
+                    <i class="search icon"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+            </div>
+            <a class="item" href="/signout">退出</a>
+        </div>
+    </div>
 
-<div class="ui grid">
-  <div class="three wide column"></div>
-  <div class="ten wide column ui grid segment">
-    <div class = "three wide column">
-      <div  class = "ui list">
-        <a class = "item"  href="/createCourse">
-          <i class = "user icon"></i>
-          <div class = "content">新建课程</div>
-        </a>
-        <a class = "item">
-          <i class = "user icon"></i>
-          <div class = "content">实时评测</div>
-        </a>
+  <!-- 卡片栏 -->
+  <div class="ui segment">
+    <div class="ui grid">
+      <div class="one wide column"></div>
 
-        <a class = "item">
-          <i class = "user icon"></i>
-          <div class = "content">我的课程</div>
-        </a>
-
+        <div class="ui link cards">
+          <div class="card">
+            <div class="image">
+              <img src="/img/<%= author.avatar %>">
+            </div>
+            <div class="content">
+              <div class="header"><%= author.name %></div>
+              <div class="meta">
+                <span><%= ({m: '男', f: '女', x: '保密'})[author.gender] %></span>
+              </div>
+              <div class="description">
+                <%= author.bio %>
+              </div>
+           </div>
+          <div class="extra content">
+            <span>
+              <i class="call icon"></i>
+                15986215103
+            </span>
+          </div>
+        </div>
       </div>
-    </div>  
-    <div class = "twelve wide column">
-      <div class = "ui list segment">
+
+      <!-- 内容栏 -->
+      <div class="one wide column"></div>
+      <div class="ui divided items">
 
         <% courses.forEach(function (course) { %>
         <%- include('components/courses', { course: course }) %>
         <% }) %>
 
       </div>
-    </div>
 
+    </div>
   </div>
-</div>
-<%- include('footer') %>
+
+</body>
+</html>

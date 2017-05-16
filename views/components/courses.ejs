@@ -1,8 +1,12 @@
-<div class = "item grid">
-          <i class="calendar outline icon"></i>
-          <div class = "content">
-            <a href="/home/<%= course.name %>" class = "header">课程名称: <%= course.name %></a>
-            <div class = "description">管理员: <%= course.manager %></div>
-            <div class = "description"> 课程描述: <%= course.bio %></div>
-          </div>
-</div>
+<div class="item">
+  <i class="calendar outline icon"></i>
+  <div class="content">
+    <a class="header" href="/home/<%= course.name %>"><%= course.name %></a>
+      <div class="meta">
+        <span class="cinema">星期二 9:30-11:30</span>
+      </div>
+      <div class="description">
+        <p><%= course.bio %></p>
+      </div>
+  </div>
+ </div>
