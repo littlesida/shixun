@@ -1,6 +1,7 @@
 var express = require('express');
 var xlsx = require('node-xlsx');
 var router = express.Router();
+var qr = require('qr-image');
 
 var UserModel = require('../models/users');
 var CourseModel = require('../models/courses');
@@ -106,4 +107,23 @@ router.get('/:name/edit', function(req, res, next) {
 
 });*/
 
+router.get('/:name/sign', function (req, res, next) {
+  var course = req.params.name;
+  res.render('sign', {
+    title: 'Express',
+    course: course
+  });
+});
+
+router.get('/:name/sign/create_qrcode', function (req, res, next) {
+   var text = req.query.text;
+    try {
+        var img = qr.image(text,{size :10});
+        res.writeHead(200, {'Content-Type': 'image/png'});
+        img.pipe(res);
+    } catch (e) {
+        res.writeHead(414, {'Content-Type': 'text/html'});
+        res.end('<h1>414 Request-URI Too Large</h1>');
+    }
+});
 module.exports = router;
