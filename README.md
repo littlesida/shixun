@@ -18,3 +18,4 @@
 
 首先先启动数据库 默认端口为27017
 然后使用supervisor --harmony index启动应用，访问localhost:3000
+
