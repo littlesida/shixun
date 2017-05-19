@@ -5,6 +5,7 @@ var qr = require('qr-image');
 
 var UserModel = require('../models/users');
 var CourseModel = require('../models/courses');
+var SignModel = require('../models/sign');
 var checkLogin = require('../middlewares/check').checkLogin;
 
 router.get('/', checkLogin, function(req, res, next) {
@@ -128,6 +129,45 @@ router.get('/:name/create_qrcode', function (req, res, next) {
 });
 
 router.get('/:name/sign', function (req, res, next) {
-  res.render('sign');
+  var course = req.params.name;
+  res.render('sign', {
+    course: course
+  });
 });
+
+// POST /posts 签到记录
+router.post('/:name/sign', function(req, res, next) {
+  var course = req.params.name;
+  var number = req.fields.number;
+  var name = req.fields.name;
+
+  // 校验参数
+  try {
+    if (!number.length) {
+      throw new Error('请填写学号');
+    }
+    if (!name.length) {
+      throw new Error('请填写姓名');
+    }
+  } catch (e) {
+    req.flash('error', e.message);
+    return res.redirect('back');
+  }
+
+  var post = {
+    course: course,
+    number: number,
+    name: name
+  };
+
+  SignModel.create(post)
+    .then(function (result) {
+      // 此 post 是插入 mongodb 后的值，包含 _id
+      post = result.ops[0];
+      req.flash('success', '签到成功');
+      res.redirect('back');
+    })
+    .catch(next);
+});
+
 module.exports = router;

@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><%= title %></title>
+    <title>二维码</title>
     <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.js"></script>
     <link href="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.css" rel="stylesheet">
 </head>
 <body>
-<h1><%= title %></h1>
-<img class="ui centered medium image" src="/home/<%= course %>/create_qrcode?text=http://localhost:3000/home/<%= course %>/sign"/>
+<br/>
+<h1 class="ui center aligned icon header">
+  扫描二维码签到
+</h1>
+<a href="/home/<%= course %>/sign"><img class="ui centered medium image" src="/home/<%= course %>/create_qrcode?text=http://localhost:3000/home/<%= course %>/sign"/></a>
 </body>
 </html>
