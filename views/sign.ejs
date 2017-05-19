@@ -1,13 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title><%= title %></title>
-    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-    <script src="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.js"></script>
-    <link href="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.css" rel="stylesheet">
-</head>
-<body>
-<h1><%= title %></h1>
-<img class="ui centered medium image" src="/home/<%= course %>/sign/create_qrcode?text=http://blog.csdn.net/fo11ower"/>
-</body>
-</html>
+  <head>
+    <meta charset="utf-8">
+    <title>签到</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/semantic-ui/2.1.8/semantic.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css">
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/semantic-ui/2.1.8/semantic.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.semanticui.min.js"></script>
+  </head>
+  <body>
+  <%- include('components/notification') %>
+
+<h2 class="ui center aligned icon header">
+  <i class="circular users icon"></i>
+  输入签到信息
+</h2>
+
+<div class="ui grid">
+  <div class="four wide column">
+  </div>
+
+  <div class="eight wide column">
+    <form class="ui form segment" method="post" action="/posts">
+      <div class="field required">
+        <label>学号</label>
+        <input type="text" name="title" placeholder="请输入你的学号">
+      </div>
+      <div class="field required">
+        <label>姓名</label>
+        <input type="text" name="name" placeholder="请输入你的姓名">
+      </div>
+      <input type="submit" class="ui button" value="提交">
+    </div>
+  </form>
+</div>
+
+<%- include('footer') %>
