@@ -12,7 +12,7 @@ router.get('/', checkLogin, function(req, res, next) {
   var manager = req.session.user.name;
 
   Promise.all([
-    UserModel.getUserByName(manager),// 获取签到信息
+    UserModel.getUserByName(manager),// 获取用户信息
   ])
   .then(function (result) {
     var author = result[0];
@@ -34,7 +34,6 @@ router.get('/', checkLogin, function(req, res, next) {
 
 router.get('/myCourse', checkLogin, function(req, res, next) {
   //res.render('home');
-
   var manager = req.session.user.name;
 
   CourseModel.getCourses(manager)
@@ -47,22 +46,27 @@ router.get('/myCourse', checkLogin, function(req, res, next) {
 
 });
 
-router.get('/:name', function(req, res, next) {
-  var name = req.params.name;
-
-  //console.log("我的数据" + datas[0][0]);
+router.get('/:courseName', checkLogin, function(req, res, next) {
+  var courseName = req.params.courseName;
+  console.log("课程名称为:" + courseName);
 
   Promise.all([
-    CourseModel.getCourseByName(name),// 获取签到信息
+    CourseModel.getCourseByName(courseName),// 获取课程信息
   ])
   .then(function (result) {
     var course = result[0];
     if (!course) {
-      throw new Error('该课程不存在');
+      req.flash('error', '该课程不存在'); 
+      console.log('该课程不存在');
+      return res.redirect('back');//返回之前的页面
+    } else if (course.manager != req.session.user.name) {
+      req.flash('error', '您不是该课程的管理员'); 
+      console.log('您不是该课程的管理员');
+      return res.redirect('back');//返回之前的页面
     }
 
     var datas = [];
-
+    var signs = [];
     var obj = xlsx.parse('./public/img/' + course.stulist);
     var excelObj=obj[0].data;
     for(var i in excelObj){
@@ -73,12 +77,19 @@ router.get('/:name', function(req, res, next) {
       }
       datas.push(arr);
     }
-
+// 写入课程详细信息
+/*
     res.render('myCourseDetail', {
       number: datas.length,
       datas: datas,
       course: course,
+    });*/
+    res.render('courseDetail', {
+      number: datas.length,
+      course: course,
+      signs: signs,
     });
+
   })
   .catch(next);
 });
