@@ -98,6 +98,7 @@ router.get('/:name/edit', function(req, res, next) {
   res.render('editStudent');
 });
 
+
 /*router.post('/:name/edit', checkLogin, function(req, res, next) {
   var courseName = req.params.name;
   var addName = req.fields.addName;
