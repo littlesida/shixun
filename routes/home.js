@@ -8,6 +8,8 @@ var CourseModel = require('../models/courses');
 var SignModel = require('../models/sign');
 var checkLogin = require('../middlewares/check').checkLogin;
 
+
+// home 主页信息
 router.get('/', checkLogin, function(req, res, next) {
   var manager = req.session.user.name;
 
@@ -19,6 +21,7 @@ router.get('/', checkLogin, function(req, res, next) {
     if (!author) {
       throw new Error('用户不存在');
     }
+    // 用户存在，则获取该用户的所有课程
     CourseModel.getCourses(manager)
     .then(function (courses) {
       res.render('home', {
@@ -31,7 +34,7 @@ router.get('/', checkLogin, function(req, res, next) {
   .catch(next);
 });
 
-
+// 暂时不需要用到
 router.get('/myCourse', checkLogin, function(req, res, next) {
   //res.render('home');
   var manager = req.session.user.name;
@@ -46,6 +49,7 @@ router.get('/myCourse', checkLogin, function(req, res, next) {
 
 });
 
+// 课程详细信息
 router.get('/:courseName', checkLogin, function(req, res, next) {
   var courseName = req.params.courseName;
   console.log("课程名称为:" + courseName);
@@ -65,8 +69,10 @@ router.get('/:courseName', checkLogin, function(req, res, next) {
       return res.redirect('back');//返回之前的页面
     }
 
+    console.log("课程id为："+ course._id);
     var datas = [];
-    var signs = [];
+    var signs = [];  // 签到列表
+    // 读取学生名单并写入datas
     var obj = xlsx.parse('./public/img/' + course.stulist);
     var excelObj=obj[0].data;
     for(var i in excelObj){
@@ -94,6 +100,7 @@ router.get('/:courseName', checkLogin, function(req, res, next) {
   .catch(next);
 });
 
+// 修改学生名单
 router.get('/:name/edit', function(req, res, next) {
   res.render('editStudent');
 });
@@ -139,6 +146,8 @@ router.get('/:name/create_qrcode', function (req, res, next) {
         res.end('<h1>414 Request-URI Too Large</h1>');
     }
 });
+
+
 
 router.get('/:name/sign', function (req, res, next) {
   var course = req.params.name;
