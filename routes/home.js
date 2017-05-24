@@ -7,12 +7,13 @@ var UserModel = require('../models/users');
 var CourseModel = require('../models/courses');
 var SignModel = require('../models/sign');
 var checkLogin = require('../middlewares/check').checkLogin;
+var checkBelong = require('../middlewares/check').checkBelong;
 
 
 // home 主页信息
 router.get('/', checkLogin, function(req, res, next) {
   var manager = req.session.user.name;
-
+  console.log("home");
   Promise.all([
     UserModel.getUserByName(manager),// 获取用户信息
   ])
@@ -50,7 +51,7 @@ router.get('/myCourse', checkLogin, function(req, res, next) {
 });
 
 // 课程详细信息
-router.get('/:courseName', checkLogin, function(req, res, next) {
+router.get('/:courseName', checkBelong, function(req, res, next) {
   var courseName = req.params.courseName;
   console.log("课程名称为:" + courseName);
 
@@ -59,15 +60,6 @@ router.get('/:courseName', checkLogin, function(req, res, next) {
   ])
   .then(function (result) {
     var course = result[0];
-    if (!course) {
-      req.flash('error', '该课程不存在'); 
-      console.log('该课程不存在');
-      return res.redirect('back');//返回之前的页面
-    } else if (course.manager != req.session.user.name) {
-      req.flash('error', '您不是该课程的管理员'); 
-      console.log('您不是该课程的管理员');
-      return res.redirect('back');//返回之前的页面
-    }
 
     console.log("课程id为："+ course._id);
     var datas = [];
