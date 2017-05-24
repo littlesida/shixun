@@ -2,30 +2,34 @@ var express = require('express');
 var router = express.Router();
 
 var checkLogin = require('../middlewares/check').checkLogin;
+var checkBelong = require('../middlewares/check').checkBelong;
 var CourseModel = require('../models/courses');
 
-router.get('/', checkLogin, function (req, res, next) {
+router.get('/', checkBelong, function (req, res, next) {
   var courseName = req.query.courseName;
-  Promise.all([
-    CourseModel.getCourseByName(courseName),// 获取课程信息
-  ])
-  .then(function (result) {
-    var course = result[0];
-    if (!course) {
-      req.flash('error', '该课程不存在'); 
-      console.log('该课程不存在');
-      return res.redirect('back');//返回之前的页面
-    } else if (course.manager != req.session.user.name) {
-      req.flash('error', '您不是该课程的管理员'); 
-      console.log('您不是该课程的管理员');
-      return res.redirect('back');//返回之前的页面
-    }
-  console.log("course is "+course);
+  console.log("course is "+courseName);
   res.render('createSign', {
-    course : course
+    courseName : courseName
   });
-})
-  .catch(next);
+});
+
+router.post('/', checkBelong, function(req, res, next) {
+  var courseName = req.fields.courseName;
+  var signName = req.fields.signName;
+  console.log('课程名称为:' + courseName);
+  console.log('签到名称为:' + signName);
+  try {
+    if (!(signName.length >=1 && signName.length <= 10)) {
+      console.log('签到名称长度为:' + signName.length);
+      throw new Error('签到名称请限制在 1-10 个字符');
+    } 
+  } catch(e) {
+    req.flash('error', e.message);
+    return res.redirect('back');
+  }
+
+  req.flash('error', '测试错误');
+  res.redirect('back');
 });
 
 module.exports = router;
