@@ -1,3 +1,5 @@
+var CourseModel = require('../models/courses');
+
 module.exports = {
   checkLogin: function checkLogin(req, res, next) {
     if (!req.session.user) {
@@ -13,5 +15,30 @@ module.exports = {
       return res.redirect('back');//返回之前的页面
     }
     next();
+  },
+
+  checkBelong: function checkBelong(req, res, next) {
+    if (!req.session.user) {
+      req.flash('error', '未登录');
+      return res.redirect('/signin');
+    }
+    var courseName = req.query.courseName;
+    if (!courseName) courseName = req.params.courseName;
+    Promise.all([
+    CourseModel.getCourseByName(courseName),// 获取课程信息
+  ])
+  .then(function (result) {
+    var course = result[0];
+    if (!course) {
+      req.flash('error', '该课程不存在'); 
+      console.log('该课程不存在');
+      return res.redirect('back');//返回之前的页面
+    } else if (course.manager != req.session.user.name) {
+      req.flash('error', '您不是该课程的管理员'); 
+      console.log('您不是该课程的管理员');
+      return res.redirect('back');//返回之前的页面
+    }
+    next();
+  }).catch(next);
   }
 };
