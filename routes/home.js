@@ -95,6 +95,29 @@ router.get('/:courseName', checkBelong, function(req, res, next) {
   .catch(next);
 });
 
+// 获取签到详情
+router.get('/:courseName/:signName', checkBelong, function(req, res, next) {
+  console.log("进入签到详情: ", req.params.signName);
+  var hadsigns = [];
+  var notsigns = [];
+  var errorsigns = [];
+  for (i = 0; i < 10; ++i) {
+    var temp = [];
+    temp.stdId = i;
+    temp.stdName = i;
+    hadsigns.push(temp);
+    console.log(temp.stdId);
+    console.log(temp.stdName);
+  }
+  console.log("hadsigns 的大小是" + hadsigns.length);
+  res.render('signDetail', {
+    hadSigns: hadsigns,
+    notSigns: notsigns,
+    errorSigns: errorsigns
+  });
+});
+
+
 // 修改学生名单
 router.get('/:name/edit', function(req, res, next) {
   res.render('editStudent');
