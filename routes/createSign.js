@@ -4,6 +4,7 @@ var router = express.Router();
 var checkLogin = require('../middlewares/check').checkLogin;
 var checkBelong = require('../middlewares/check').checkBelong;
 var CourseModel = require('../models/courses');
+var SignModel = require('../models/sign');
 
 router.get('/', checkBelong, function (req, res, next) {
   var courseName = req.query.courseName;
@@ -27,9 +28,27 @@ router.post('/', checkBelong, function(req, res, next) {
     req.flash('error', e.message);
     return res.redirect('back');
   }
-
-  req.flash('error', '测试错误');
-  res.redirect('back');
+// 保存信息
+var sign = {
+  courseName: courseName,
+  signName: signName
+};
+SignModel.create(sign)
+  .then(function(result) {
+      
+      console.log('创建签到成功');
+      req.flash('success', '创建签到成功');
+      res.redirect('/home/'+courseName);
+  })
+  .catch(function (e) {
+    if (e.message.match('E11000 duplicate key')) {
+      req.flash('error', '该签到已存在');
+      return res.redirect('back');
+    }
+    next(e);
+  });
+  //req.flash('error', '测试错误');
+  //res.redirect('back');
 });
 
 module.exports = router;

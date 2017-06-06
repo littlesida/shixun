@@ -57,13 +57,15 @@ router.get('/:courseName', checkBelong, function(req, res, next) {
 
   Promise.all([
     CourseModel.getCourseByName(courseName),// 获取课程信息
+    SignModel.getSigns(courseName), // 获取签到列表
   ])
   .then(function (result) {
-    var course = result[0];
-
+    var course = result[0]; 
+    var signs = result[1];  // 签到列表
     console.log("课程id为："+ course._id);
+    console.log('签到列表为:' + signs);
     var datas = [];
-    var signs = [];  // 签到列表
+    
     // 读取学生名单并写入datas
     var obj = xlsx.parse('./public/img/' + course.stulist);
     var excelObj=obj[0].data;
@@ -75,6 +77,7 @@ router.get('/:courseName', checkBelong, function(req, res, next) {
       }
       datas.push(arr);
     }
+
 // 写入课程详细信息
 /*
     res.render('myCourseDetail', {
