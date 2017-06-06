@@ -122,6 +122,8 @@ router.get('/:name/edit', function(req, res, next) {
 
 });*/
 
+
+
 router.get('/:name/qrcode', function (req, res, next) {
   var course = req.params.name;
   res.render('qrcode', {
