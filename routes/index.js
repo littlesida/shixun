@@ -9,6 +9,7 @@ module.exports = function(app) {
     app.use('/home', require('./home'));   // 主页
     app.use('/createCourse', require('./createCourse'));  // 创建课程
     app.use('/createSign', require('./createSign')); // 创建签到
+    app.use('/sign', require('./sign')); 
     // 404 page
     app.use(function(req, res) {
         if (!res.headersSent) {

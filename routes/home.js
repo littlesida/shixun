@@ -13,7 +13,7 @@ var checkSignBelong = require('../middlewares/check').checkSignBelong;
 
 
 // home 主页信息
-router.get('/', checkLogin, function(req, res, next) {
+router.get('/', checkLogin, function (req, res, next) {
   var manager = req.session.user.name;
   console.log("home");
   Promise.all([
@@ -38,7 +38,7 @@ router.get('/', checkLogin, function(req, res, next) {
 });
 
 // 暂时不需要用到
-router.get('/myCourse', checkLogin, function(req, res, next) {
+router.get('/myCourse', checkLogin, function (req, res, next) {
   //res.render('home');
   var manager = req.session.user.name;
 
@@ -53,7 +53,7 @@ router.get('/myCourse', checkLogin, function(req, res, next) {
 });
 
 // 课程详细信息
-router.get('/:courseName', checkLogin, checkCourseBelong, function(req, res, next) {
+router.get('/:courseName', checkLogin, checkCourseBelong, function (req, res, next) {
   var courseName = req.params.courseName;
   console.log("课程名称为:" + courseName);
 
@@ -83,7 +83,7 @@ router.get('/:courseName', checkLogin, checkCourseBelong, function(req, res, nex
 
 
 // 获取学生名单
-router.get('/:courseName/stulist', checkLogin, checkCourseBelong, function(req, res, next) {
+router.get('/:courseName/stulist', checkLogin, checkCourseBelong, function (req, res, next) {
   var courseName = req.params.courseName;
   Promise.all([
     StudentModel.getStudentByCoursename(courseName),
@@ -103,7 +103,7 @@ router.get('/:courseName/stulist', checkLogin, checkCourseBelong, function(req, 
     .catch(next);
   //res.render('studentList');
 });
-
+/*
 // 二维码获取
 router.get('/:name/qrcode', function (req, res, next) {
   var course = req.params.name;
@@ -123,20 +123,31 @@ router.get('/:name/create_qrcode', function (req, res, next) {
         res.end('<h1>414 Request-URI Too Large</h1>');
     }
 });
-
+*/
 
 
 // 获取签到详情
-router.get('/:courseName/:signName', checkLogin, checkCourseBelong, checkSignBelong, function(req, res, next) {
+router.get('/:courseName/:signName', checkLogin, checkCourseBelong, checkSignBelong, function (req, res, next) {
   console.log("进入签到详情: ", req.params.signName);
   var hadsigns = [];
   var notsigns = [];
   var errorsigns = [];
   res.render('signDetail', {
     coursename: req.params.courseName,
+    signname: req.params.signName,
     hadSigns: hadsigns,
     notSigns: notsigns,
     errorSigns: errorsigns
+  });
+});
+
+router.get('/:courseName/:signName/qrcode', checkLogin, checkCourseBelong, checkSignBelong, function (req, res, next) {
+  console.log('进入这里了');
+  var coursename = req.params.courseName;
+  var signname = req.params.signName;
+  res.render('qrcode2', {
+    coursename: coursename,
+    signname : signname
   });
 });
 
