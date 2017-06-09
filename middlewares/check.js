@@ -46,6 +46,8 @@ module.exports = {
       coursename = req.query.courseName;
       signname = req.query.signName;
     }
+    console.log("coursename = " + coursename);
+    console.log("signname = " + signname);
     Promise.all([
       SignModel.findSignByCourseAndSignName(coursename, signname),
     ])
