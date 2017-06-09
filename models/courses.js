@@ -5,7 +5,8 @@ module.exports = {
   create: function create(course) {
     return Course.create(course).exec();
   },
-    // 通过用户名获取用户信息
+
+    // 通过课程名获取课程信息
   getCourseByName: function getCourseByName(name) {
     return Course
       .findOne({ name: name })
@@ -13,6 +14,7 @@ module.exports = {
       .exec();
   },
 
+// 获取用户的所有课程
   getCourses: function getCourses(manager) {
     var query = {};
     if (manager) {
@@ -25,6 +27,7 @@ module.exports = {
       .exec();
   },
 
+// 获取某课程的名单
   getListByCourse: function getListByCourse(course) {
     return Course
       .findOne({ stulist: course })

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/semantic.min.js"></script>
+    <link href="/css//semantic.min.css" rel="stylesheet">
+    <style media="screen">
+        body {
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="ui inverted menu">
+        <a class="item" href="/home"><i class="home icon"></i>主页</a>
+        <a class="item" href="/home/<%= courseName%>">返回课程</a>
+        <a class="active item" href="/createCourse">创建课程</a>
+        <a class="item">测验</a>
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent inverted icon input">
+                    <i class="search icon"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+            </div>
+            <a class="item" href="/signout">退出</a>
+        </div>
+    </div>
+    <%- include('components/notification') %>
+
+<div class="ui grid">
+  <div class="four wide column"></div>
+  <div class="eight wide column">
+    <form class="ui form segment" method="post" enctype="multipart/form-data">
+      <div class="field required">
+        <label>课程名称</label>
+        <input placeholder="课程名称" type="text" name="courseName" readonly = "true" value = <%= courseName %>>
+      </div>
+      <div class="field required">
+        <label>签到名称</label>
+        <input placeholder="签到名称" type="text" name="signName">
+      </div>
+      <input type="submit" class="ui primary button" value="创建签到">
+     </form>
+  </div>
+</div>
+
+</body>
+</html>
+
+<!--
+<%- include('header') %>
+
+
+<%- include('footer') %>
+-->

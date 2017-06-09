@@ -6,6 +6,7 @@ module.exports = {
     return User.create(user).exec();
   },
 
+
   // 通过用户名获取用户信息
   getUserByName: function getUserByName(name) {
     return User
