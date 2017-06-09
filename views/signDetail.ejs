@@ -5,19 +5,18 @@
     <title>Home</title>
     <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.semanticui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css">
     <link href="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.css" rel="stylesheet">
-    <style media="screen">
-        body {
-            padding: 15px;
-        }
-    </style>
+
 </head>
 <body>
     <!-- 导航栏 -->
     <div class="ui inverted menu">
         <a class="active item" href="/home"><i class="home icon"></i>主页</a>
         <a class="item">我的课程</a>
-        <a class="item" href="/home">返回课程</a>
+        <a class="item" href="/home/<%= coursename%>">返回课程</a>
         <a class="item">查看二维码</a>
         <div class="right menu">
             <div class="item">
@@ -32,19 +31,18 @@
 
 <div class="ui segment">
   <div class="ui grid">
-    <div class="two wide column "></div>
-
-    <div class="three wide column">
-    <table class="ui celled  table  segment center aligned">
+    <div class="five wide column">
+    <table class="ui celled  table  segment center aligned eg" >
       <thead>
         <tr><th colspan="2">已签到列表 </th>
         </tr>
+        <tr>
+          <th >学号</th>
+          <th >姓名</th>
+        </tr>
       </thead>
       <tbody>
-        <tr>
-          <td >学号</td>
-          <td >姓名</td>
-        </tr>
+        
         <% hadSigns.forEach(function (item) { %>
           <tr>
           <td ><%= item.stdId %></td>
@@ -55,18 +53,17 @@
     </table>
   </div>
 
-    <div class="one wide column"></div>
-    <div class="three wide column">
-    <table class="ui celled table segment center aligned">
+    <div class="five wide column">
+    <table class="ui celled table segment center aligned eg">
       <thead>
         <tr><th colspan="2">未签到列表 </th>
         </tr>
+        <tr>
+          <th >学号</th>
+          <th >姓名</th>
+        </tr>
       </thead>
       <tbody>
-        <tr>
-          <td >学号</td>
-          <td >姓名</td>
-        </tr>
         <% notSigns.forEach(function (item) { %>
           <tr>
           <td ><%= item.stdId %></td>
@@ -77,19 +74,19 @@
     </table>
   </div>
 
-    <div class="one wide column"></div>
 
-    <div class="three wide column">
-    <table class="ui celled table  segment center aligned">
+    <div class="five wide column segment">
+    <table class="ui celled table  segment center aligned eg">
       <thead>
         <tr><th colspan="2">信息错误列表 </th>
         </tr>
+        <tr>
+          <th >学号</th>
+          <th >姓名</th>
+        </tr>
       </thead>
       <tbody>
-        <tr>
-          <td >学号</td>
-          <td >姓名</td>
-        </tr>
+        
         <% errorSigns.forEach(function (item) { %>
           <tr>
           <td ><%= item.stdId %></td>
@@ -106,4 +103,11 @@
 
 
 </body>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('.eg').DataTable();
+} );
+</script>
+
 </html>
