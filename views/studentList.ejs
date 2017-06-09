@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Course</title>
+    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.js"></script>
+    <script type="text/javascript" src = "/js/tablesort.js"></script>
+    
+    <link href="http://cdn.staticfile.org/semantic-ui/2.2.7/semantic.min.css" rel="stylesheet">
+    <style media="screen">
+        body {
+            padding: 15px;
+        }
+    </style>
+    <!--
+    <script>
+        $(document).ready(function() {
+            // 鼠标放到 dropdown 时显示下拉菜单，默认只有点击后才显示
+            $('.dropdown.item').dropdown({
+                on: 'hover'
+            });
+        });
+    </script>
+    -->
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="ui inverted menu">
+        <a class="active item" href="/home"><i class="home icon"></i>主页</a>
+        <a class="item" href = "/home">我的课程</a>
+        <a class="item" href="/home/<%= course.name%>/stulist">学生名单</a>
+        <a class="item" href = "/createSign?courseName=<%= course.name%>">新建签到</a>
+        <!--
+        <div class="ui dropdown item" tabindex="0">
+            Dropdown<i class="dropdown icon"></i>
+            <div class="menu" tabindex="-1">
+                <div class="item">Action</div>
+                <div class="item">Another Action</div>
+                <div class="item">Something else here</div>
+                <div class="divider"></div>
+                <div class="item">Separated Link</div>
+                <div class="divider"></div>
+                <div class="item">One more separated link</div>
+            </div>
+        </div>
+        -->
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent inverted icon input">
+                    <i class="search icon"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+            </div>
+            <a class="item" href="/signout">退出</a>
+        </div>
+    </div>
+
+  <!-- 卡片栏 -->
+  <div class="ui segment">
+    <div class="ui grid">
+      <div class="one wide column"></div>
+
+        <div class="ui link cards">
+          <div class="card">
+            <div class="image">
+              <img src="/img/upload_69a8f66017ca71dad5faada14e6580f7.jpg">
+            </div>
+            <div class="content">
+              <div class="header"><%= course.name %></div>
+              <div class="meta">
+                <span>管理员: <%= course.manager %></span>
+              </div>
+              <div class="meta">
+                <span>课程人数: <%= number %></span>
+              </div>
+              <div class="description">
+                <span>课程描述: <%= course.bio %></span>
+              </div>
+           </div>
+          <div class="extra content">
+            <span>
+              <i class="call icon"></i>
+                15986215103
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 内容栏 -->
+      <div class="one wide column"></div>
+      <div class = "four wide column">
+            <table class="ui celled table segment center aligned sortable">
+              <thead>
+                <tr>
+                  <th>学号</th>
+                  <th>姓名</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% datas.forEach(function (item) { %>
+                  <tr>
+                  <td ><%= item.stdId %></td>
+                  <td ><%= item.name %></td>
+                </tr>
+                <% }) %>
+              </tbody>
+              <tfoot class="full-width">
+                <tr >
+                  <th colspan="2"> 
+                    <div class="ui small  button right floated"><i class="edit icon"></i>添加学生 </div>
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('table').tablesort()
+} );
+</script>
+</html>
