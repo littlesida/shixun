@@ -5,14 +5,14 @@ module.exports = {
   create: function create(sign) {
     return Sign.create(sign).exec();
   },
-/*
-  getSignByNumber: function getSignByNumber(number) {
+
+  findSignByCourseAndSignName: function findSignByCourseAndSignName(course, sign) {
     return Sign
-      .findOne({ number: number })
+      .findOne({ courseName: course, signName: sign })
       .addCreatedAt()
       .exec();
   },
-*/
+
   getSigns: function getSigns(course) {
     var query = {};
     if (course) {
