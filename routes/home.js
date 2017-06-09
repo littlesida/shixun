@@ -6,8 +6,10 @@ var qr = require('qr-image');
 var UserModel = require('../models/users');
 var CourseModel = require('../models/courses');
 var SignModel = require('../models/sign');
+var StudentModel = require('../models/students');
 var checkLogin = require('../middlewares/check').checkLogin;
-var checkBelong = require('../middlewares/check').checkBelong;
+var checkCourseBelong = require('../middlewares/check').checkCourseBelong;
+var checkSignBelong = require('../middlewares/check').checkSignBelong;
 
 
 // home 主页信息
@@ -51,42 +53,26 @@ router.get('/myCourse', checkLogin, function(req, res, next) {
 });
 
 // 课程详细信息
-router.get('/:courseName', checkBelong, function(req, res, next) {
+router.get('/:courseName', checkLogin, checkCourseBelong, function(req, res, next) {
   var courseName = req.params.courseName;
   console.log("课程名称为:" + courseName);
 
   Promise.all([
     CourseModel.getCourseByName(courseName),// 获取课程信息
     SignModel.getSigns(courseName), // 获取签到列表
+    StudentModel.getStudentByCoursename(courseName), // 读取学生
   ])
   .then(function (result) {
     var course = result[0]; 
     var signs = result[1];  // 签到列表
+    var students = result[2];
     console.log("课程id为："+ course._id);
-    console.log('签到列表为:' + signs);
-    var datas = [];
     
-    // 读取学生名单并写入datas
-    var obj = xlsx.parse('./public/img/' + course.stulist);
-    var excelObj=obj[0].data;
-    for(var i in excelObj){
-      var arr = [];
-      var value=excelObj[i];
-      for(var j in value){
-        arr.push(value[j]);
-      }
-      datas.push(arr);
-    }
 
 // 写入课程详细信息
-/*
-    res.render('myCourseDetail', {
-      number: datas.length,
-      datas: datas,
-      course: course,
-    });*/
+
     res.render('courseDetail', {
-      number: datas.length,
+      number: students.length,
       course: course,
       signs: signs,
     });
@@ -95,32 +81,63 @@ router.get('/:courseName', checkBelong, function(req, res, next) {
   .catch(next);
 });
 
+
+// 获取学生名单
+router.get('/:courseName/stulist', checkLogin, checkCourseBelong, function(req, res, next) {
+  var courseName = req.params.courseName;
+  Promise.all([
+    StudentModel.getStudentByCoursename(courseName),
+    CourseModel.getCourseByName(courseName),// 获取课程信息
+  ])
+  .then(function (result) {
+      var students = result[0];
+      var course = result[1];
+      console.log("students.length = " + students.length);
+      console.log("course.length = " + course.length );
+      res.render('studentList2', {
+        number: students.length,
+        datas: students,
+        course: course,
+      });
+    })
+    .catch(next);
+  //res.render('studentList');
+});
+
+// 二维码获取
+router.get('/:name/qrcode', function (req, res, next) {
+  var course = req.params.name;
+  res.render('qrcode', {
+    course: course
+  });
+});
+
+router.get('/:name/create_qrcode', function (req, res, next) {
+   var text = req.query.text;
+    try {
+        var img = qr.image(text,{size :10});
+        res.writeHead(200, {'Content-Type': 'image/png'});
+        img.pipe(res);
+    } catch (e) {
+        res.writeHead(414, {'Content-Type': 'text/html'});
+        res.end('<h1>414 Request-URI Too Large</h1>');
+    }
+});
+
+
+
 // 获取签到详情
-router.get('/:courseName/:signName', checkBelong, function(req, res, next) {
+router.get('/:courseName/:signName', checkLogin, checkCourseBelong, checkSignBelong, function(req, res, next) {
   console.log("进入签到详情: ", req.params.signName);
   var hadsigns = [];
   var notsigns = [];
   var errorsigns = [];
-  for (i = 0; i < 10; ++i) {
-    var temp = [];
-    temp.stdId = i;
-    temp.stdName = i;
-    hadsigns.push(temp);
-    console.log(temp.stdId);
-    console.log(temp.stdName);
-  }
-  console.log("hadsigns 的大小是" + hadsigns.length);
   res.render('signDetail', {
+    coursename: req.params.courseName,
     hadSigns: hadsigns,
     notSigns: notsigns,
     errorSigns: errorsigns
   });
-});
-
-
-// 修改学生名单
-router.get('/:name/edit', function(req, res, next) {
-  res.render('editStudent');
 });
 
 
@@ -147,25 +164,7 @@ router.get('/:name/edit', function(req, res, next) {
 
 
 
-router.get('/:name/qrcode', function (req, res, next) {
-  var course = req.params.name;
-  res.render('qrcode', {
-    title: 'Express',
-    course: course
-  });
-});
 
-router.get('/:name/create_qrcode', function (req, res, next) {
-   var text = req.query.text;
-    try {
-        var img = qr.image(text,{size :10});
-        res.writeHead(200, {'Content-Type': 'image/png'});
-        img.pipe(res);
-    } catch (e) {
-        res.writeHead(414, {'Content-Type': 'text/html'});
-        res.end('<h1>414 Request-URI Too Large</h1>');
-    }
-});
 
 
 
