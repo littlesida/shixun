@@ -7,7 +7,7 @@
     <script src="/js/semantic.min.js"></script>
     <script src="/js/jquery.dataTables.min.js"></script>
     <script src="/js/dataTables.semanticui.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/dataTables.semanticui.min.css">
     <link href="/css/semantic.min.css" rel="stylesheet">
 
 </head>
@@ -45,8 +45,8 @@
         
         <% hadSigns.forEach(function (item) { %>
           <tr>
-          <td ><%= item.stdId %></td>
-          <td ><%= item.stdName %></td>
+          <td ><%= item.id %></td>
+          <td ><%= item.name %></td>
         </tr>
         <% }) %>
       </tbody>
@@ -67,7 +67,7 @@
         <% notSigns.forEach(function (item) { %>
           <tr>
           <td ><%= item.stdId %></td>
-          <td ><%= item.stdName %></td>
+          <td ><%= item.name %></td>
         </tr>
         <% }) %>
       </tbody>
@@ -89,8 +89,8 @@
         
         <% errorSigns.forEach(function (item) { %>
           <tr>
-          <td ><%= item.stdId %></td>
-          <td ><%= item.stdName %></td>
+          <td ><%= item.id %></td>
+          <td ><%= item.name %></td>
         </tr>
         <% }) %>
       </tbody>
