@@ -1,4 +1,5 @@
 var CourseModel = require('../models/courses');
+var SignModel = require('../models/sign');
 
 module.exports = {
   checkLogin: function checkLogin(req, res, next) {
@@ -17,11 +18,7 @@ module.exports = {
     next();
   },
 
-  checkBelong: function checkBelong(req, res, next) {
-    if (!req.session.user) {
-      req.flash('error', '未登录');
-      return res.redirect('/signin');
-    }
+  checkCourseBelong: function checkCourseBelong(req, res, next) {
     var courseName = req.query.courseName;
     if (!courseName) courseName = req.params.courseName;
     Promise.all([
@@ -40,5 +37,22 @@ module.exports = {
     }
     next();
   }).catch(next);
+  },
+
+  checkSignBelong: function checkSignBelong(req, res, next) {
+    var coursename = req.params.courseName;
+    var signname = req.params.signName;
+    Promise.all([
+      SignModel.findSignByCourseAndSignName(coursename, signname),
+    ])
+      .then(function (result) {
+        if (!result[0]) {
+          req.flash('error', '该签到不存在');
+          console.log('该签到不存在');
+          return res.redirect('back');
+        }
+        next();
+      })
+      .catch(next);
   }
 };
