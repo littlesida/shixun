@@ -44,7 +44,7 @@ module.exports = {
     var signname = req.params.signName;
     if ((!coursename) || (!signname)) {
       coursename = req.query.courseName;
-      signname = req.require.signName;
+      signname = req.query.signName;
     }
     Promise.all([
       SignModel.findSignByCourseAndSignName(coursename, signname),
