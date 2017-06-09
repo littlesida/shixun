@@ -24,10 +24,10 @@
   </div>
 
   <div class="eight wide column">
-    <form class="ui form segment" method="post" action="/home/sign">
+    <form class="ui form segment" method="post" action="/sign?courseName=<%= coursename %>&signName=<%= signname%>">
       <div class="field required">
         <label>学号</label>
-        <input type="text" name="number" placeholder="请输入你的学号">
+        <input type="text" name="stdId" placeholder="请输入你的学号">
       </div>
       <div class="field required">
         <label>姓名</label>
