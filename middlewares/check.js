@@ -42,6 +42,10 @@ module.exports = {
   checkSignBelong: function checkSignBelong(req, res, next) {
     var coursename = req.params.courseName;
     var signname = req.params.signName;
+    if ((!coursename) || (!signname)) {
+      coursename = req.query.courseName;
+      signname = req.require.signName;
+    }
     Promise.all([
       SignModel.findSignByCourseAndSignName(coursename, signname),
     ])
