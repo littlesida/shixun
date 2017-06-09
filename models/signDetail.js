@@ -12,8 +12,8 @@ module.exports = {
     query.state = true;
     return SignDetail
       .find(query)
-      .sort(_id: -1)
-      .addCreateAt()
+      .sort({_id: -1})
+      .addCreatedAt()
       .exec();
   },
   getErrorItemsByCourseAndSignName: function getErrorItemsByCourseAndSignName(course, sign) {
@@ -23,8 +23,8 @@ module.exports = {
     query.state = false;
     return SignDetail
       .find(query)
-      .sort(_id: -1)
-      .addCreateAt()
+      .sort({_id: -1})
+      .addCreatedAt()
       .exec();
   }
 };
