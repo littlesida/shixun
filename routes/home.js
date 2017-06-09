@@ -7,6 +7,7 @@ var UserModel = require('../models/users');
 var CourseModel = require('../models/courses');
 var SignModel = require('../models/sign');
 var StudentModel = require('../models/students');
+var SignDetailModel = require('../models/signDetail');
 var checkLogin = require('../middlewares/check').checkLogin;
 var checkCourseBelong = require('../middlewares/check').checkCourseBelong;
 var checkSignBelong = require('../middlewares/check').checkSignBelong;
@@ -35,21 +36,6 @@ router.get('/', checkLogin, function (req, res, next) {
     
   })
   .catch(next);
-});
-
-// 暂时不需要用到
-router.get('/myCourse', checkLogin, function (req, res, next) {
-  //res.render('home');
-  var manager = req.session.user.name;
-
-  CourseModel.getCourses(manager)
-  .then(function (courses) {
-      res.render('home', {
-        courses: courses
-      });
-    })
-    .catch(next);
-
 });
 
 // 课程详细信息
@@ -103,122 +89,48 @@ router.get('/:courseName/stulist', checkLogin, checkCourseBelong, function (req,
     .catch(next);
   //res.render('studentList');
 });
-/*
-// 二维码获取
-router.get('/:name/qrcode', function (req, res, next) {
-  var course = req.params.name;
-  res.render('qrcode', {
-    course: course
-  });
-});
 
-router.get('/:name/create_qrcode', function (req, res, next) {
-   var text = req.query.text;
-    try {
-        var img = qr.image(text,{size :10});
-        res.writeHead(200, {'Content-Type': 'image/png'});
-        img.pipe(res);
-    } catch (e) {
-        res.writeHead(414, {'Content-Type': 'text/html'});
-        res.end('<h1>414 Request-URI Too Large</h1>');
-    }
-});
-*/
 
 
 // 获取签到详情
 router.get('/:courseName/:signName', checkLogin, checkCourseBelong, checkSignBelong, function (req, res, next) {
   console.log("进入签到详情: ", req.params.signName);
+  var coursename = req.params.courseName;
+  var signname = req.params.signName;
   var hadsigns = [];
   var notsigns = [];
   var errorsigns = [];
-  res.render('signDetail', {
-    coursename: req.params.courseName,
-    signname: req.params.signName,
-    hadSigns: hadsigns,
-    notSigns: notsigns,
-    errorSigns: errorsigns
-  });
+  var students = [];
+  Promise.all([
+    StudentModel.getStudentByCoursename(coursename),   // 读取学生名单
+    SignDetailModel.getRightItemsByCourseAndSignName(coursename, signname),// 获取签到正确名单
+    SignDetailModel.getErrorItemsByCourseAndSignName(coursename, signname), // 获取签到错误名单
+  ])
+  .then(function (result) {
+    students = result[0];
+    hadsigns = result[1];
+    errorsigns = result[2];
+    notsigns = students.filter(item => !hadsigns.map(item1 => item1.id).includes(item.stdId));
+    res.render('signDetail', {
+      coursename: req.params.courseName,
+      signname: req.params.signName,
+      hadSigns: hadsigns,
+      notSigns: notsigns,
+      errorSigns: errorsigns
+    });
+  })
+  .catch(next);
+  
 });
 
 router.get('/:courseName/:signName/qrcode', checkLogin, checkCourseBelong, checkSignBelong, function (req, res, next) {
-  console.log('进入这里了');
+  console.log('查看当前签到的二维码');
   var coursename = req.params.courseName;
   var signname = req.params.signName;
   res.render('qrcode2', {
     coursename: coursename,
     signname : signname
   });
-});
-
-
-/*router.post('/:name/edit', checkLogin, function(req, res, next) {
-  var courseName = req.params.name;
-  var addName = req.fields.addName;
-  var addNumber = req.fields.addNumber;
-  var deleteName = req.fields.deleteName;
-
-  // 校验参数
-  try {
-    if (!addNumber.length) {
-      throw new Error('请填写学号');
-    }
-    if (!addName.length) {
-      throw new Error('请填写姓名');
-    }
-  } catch (e) {
-    req.flash('error', e.message);
-    return res.redirect('back');
-  }
-
-});*/
-
-
-
-
-
-
-
-router.get('/:name/sign', function (req, res, next) {
-  var course = req.params.name;
-  res.render('sign', {
-    course: course
-  });
-});
-
-// POST /posts 签到记录
-router.post('/:name/sign', function(req, res, next) {
-  var course = req.params.name;
-  var number = req.fields.number;
-  var name = req.fields.name;
-
-  // 校验参数
-  try {
-    if (!number.length) {
-      throw new Error('请填写学号');
-    }
-    if (!name.length) {
-      throw new Error('请填写姓名');
-    }
-  } catch (e) {
-    req.flash('error', e.message);
-    return res.redirect('back');
-  }
-
-  var post = {
-    course: course,
-    number: number,
-    name: name
-  };
-
-  SignModel.create(post)
-    .then(function (result) {
-      // 此 post 是插入 mongodb 后的值，包含 _id
-      post = result.ops[0];
-      req.flash('success', '签到成功');
-      res.redirect('back');
-    })
-    .catch(next);
 });
 
 module.exports = router;

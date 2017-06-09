@@ -3,6 +3,7 @@ var router = express.Router();
 var qr = require('qr-image');
 
 var SignModel = require('../models/sign');
+var SignDetailModel = require('../models/signDetail');
 var StudentModel = require('../models/students');
 var checkSignBelong = require('../middlewares/check').checkSignBelong;
 
@@ -37,17 +38,35 @@ router.post('/', checkSignBelong, function (req, res, next) {
   ])
     .then(function (result) {
       var student = result[0];
+      var signDetail = {};
+      signDetail.courseName = coursename;
+      signDetail.signName = signname;
+      signDetail.name = name.toString();
+      signDetail.id = id.toString();
       if (!student) {
         console.log("该学生学号不在本课程");
+        signDetail.state = false;
         req.flash('error', "该学生学号不在本课程");
       } else if (student.name != name) {
         req.flash('error', "姓名与学号不匹配");
         console.log("姓名与学号不匹配");
+        signDetail.state = false;
       } else {
         req.flash('success', "签到成功");
         console.log("签到成功");
+        signDetail.state = true;
       }
-      return res.redirect('sign?courseName='+coursename+'\&signName='+signname);
+      SignDetailModel.create(signDetail)
+        .then(function (result) {
+          res.redirect('sign?courseName='+coursename+'\&signName='+signname);
+        })
+        .catch(function (e) {
+          if (e.message.match('E11000 duplicate key')) {
+            req.flash('error', '该学号已签到');
+            return res.redirect('sign?courseName='+coursename+'\&signName='+signname);
+          }
+        });
+      
     })
     .catch(next);
 });
