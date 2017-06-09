@@ -2,11 +2,11 @@ var express = require('express');
 var router = express.Router();
 
 var checkLogin = require('../middlewares/check').checkLogin;
-var checkBelong = require('../middlewares/check').checkBelong;
+var checkCourseBelong = require('../middlewares/check').checkCourseBelong;
 var CourseModel = require('../models/courses');
 var SignModel = require('../models/sign');
 
-router.get('/', checkBelong, function (req, res, next) {
+router.get('/', checkLogin, checkCourseBelong, function (req, res, next) {
   var courseName = req.query.courseName;
   console.log("course is "+courseName);
   res.render('createSign', {
@@ -14,7 +14,7 @@ router.get('/', checkBelong, function (req, res, next) {
   });
 });
 
-router.post('/', checkBelong, function(req, res, next) {
+router.post('/', checkLogin, checkCourseBelong, function(req, res, next) {
   var courseName = req.fields.courseName;
   var signName = req.fields.signName;
   console.log('课程名称为:' + courseName);
