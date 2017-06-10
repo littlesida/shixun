@@ -9,7 +9,7 @@ var SignModel = require('../models/sign');
 router.get('/', checkLogin, checkCourseBelong, function (req, res, next) {
   var courseName = req.query.courseName;
   console.log("course is "+courseName);
-  res.render('createSign', {
+  res.render('./sign/createSign', {
     courseName : courseName
   });
 });

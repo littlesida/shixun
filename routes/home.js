@@ -57,7 +57,7 @@ router.get('/:courseName', checkLogin, checkCourseBelong, function (req, res, ne
 
 // 写入课程详细信息
 
-    res.render('courseDetail', {
+    res.render('./course/courseDetail', {
       number: students.length,
       course: course,
       signs: signs,
@@ -80,7 +80,7 @@ router.get('/:courseName/stulist', checkLogin, checkCourseBelong, function (req,
       var course = result[1];
       console.log("students.length = " + students.length);
       console.log("course.length = " + course.length );
-      res.render('studentList2', {
+      res.render('./course/studentList2', {
         number: students.length,
         datas: students,
         course: course,
@@ -111,7 +111,7 @@ router.get('/:courseName/:signName', checkLogin, checkCourseBelong, checkSignBel
     hadsigns = result[1];
     errorsigns = result[2];
     notsigns = students.filter(item => !hadsigns.map(item1 => item1.id).includes(item.stdId));
-    res.render('signDetail', {
+    res.render('./sign/signDetail', {
       coursename: req.params.courseName,
       signname: req.params.signName,
       hadSigns: hadsigns,

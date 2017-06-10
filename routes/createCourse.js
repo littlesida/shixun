@@ -11,7 +11,7 @@ var checkLogin = require('../middlewares/check').checkLogin;
 
 // GET /createCourse 创建课程
 router.get('/', checkLogin, function(req, res, next) {
-  res.render('createCourse');
+  res.render('./course/createCourse');
 });
 
 

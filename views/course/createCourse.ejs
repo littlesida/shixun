@@ -38,7 +38,7 @@
             <a class="item" href="/signout">退出</a>
         </div>
     </div>
-    <%- include('components/notification') %>
+    <%- include('./../components/notification') %>
 
 <div class="ui grid">
   <div class="four wide column"></div>
@@ -64,31 +64,3 @@
 
 </body>
 </html>
-
-<!--
-<%- include('header') %>
-
-<div class="ui grid">
-  <div class="four wide column"></div>
-  <div class="eight wide column">
-    <form class="ui form segment" method="post" enctype="multipart/form-data">
-      <div class="field required">
-        <label>课程名称</label>
-        <input placeholder="课程名称" type="text" name="name">
-      </div>
-      
-      <div class="field required">
-        <label>学生名单</label>
-        <input type="file" name="StuList">
-      </div>
-      <div class="field required">
-        <label>课程介绍/说明</label>
-        <textarea name="bio" rows="5" v-model="course.bio"></textarea>
-      </div>
-      <input type="submit" class="ui button fluid" value="创建课程">
-    </div>
-  </form>
-</div>
-
-<%- include('footer') %>
--->
