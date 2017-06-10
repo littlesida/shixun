@@ -9,7 +9,7 @@ var checkSignBelong = require('../middlewares/check').checkSignBelong;
 
 router.get('/', checkSignBelong, function (req, res, next) {
   console.log('进入sign get');
-  res.render('sign', {
+  res.render('./sign/sign', {
     coursename: req.query.courseName,
     signname: req.query.signName
   });
