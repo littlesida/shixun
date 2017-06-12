@@ -55,6 +55,7 @@ router.post('/', checkSignBelong, function (req, res, next) {
         req.flash('success', "签到成功");
         console.log("签到成功");
         signDetail.state = true;
+        res.redirect('./home/'+coursename+'/'+signname);
       }
       SignDetailModel.create(signDetail)
         .then(function (result) {
