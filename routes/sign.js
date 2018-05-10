@@ -6,6 +6,7 @@ var SignModel = require('../models/sign');
 var SignDetailModel = require('../models/signDetail');
 var StudentModel = require('../models/students');
 var checkSignBelong = require('../middlewares/check').checkSignBelong;
+var getClientIp = require('../middlewares/Utils').getClientIp;
 
 router.get('/', checkSignBelong, function (req, res, next) {
   console.log('进入sign get');
@@ -20,6 +21,9 @@ router.post('/', checkSignBelong, function (req, res, next) {
   var name = req.fields.name;
   var coursename = req.query.courseName;
   var signname = req.query.signName;
+  var ip = getClientIp(req);
+
+  console.log('用户的IP地址是：' + ip);
   try {
     if (!id) {
       console.log("没有填写学号");
