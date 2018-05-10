@@ -91,7 +91,7 @@ if (module.parent) {
   module.exports = app;
 } else {
   // 监听端口，启动程序
-  app.listen(config.port, function () {
+  app.listen(config.port, '0.0.0.0', function () {
      console.log(`${pkg.name} listening on port ${config.port}`);
   });
 }
